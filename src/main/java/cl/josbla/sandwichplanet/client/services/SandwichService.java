@@ -93,12 +93,56 @@ public class SandwichService {
                 .build();
     }
 
-    @Transactional(readOnly = true)
-    public List<SandwichResumenDTO> listarResumen() {
-        List<Sandwich> sandwiches = sandwichRepository.findAll();
-        return sandwiches.stream()
-                .map(SandwichMapper::toResumenDto)
-                .collect(Collectors.toList());
-        }
+		@Transactional(readOnly = true)
+		public List<SandwichResumenDTO> listarResumen() {
+			List<Sandwich> sandwiches = sandwichRepository.findAll();
+			return sandwiches.stream()
+							.map(SandwichMapper::toResumenDto)
+							.collect(Collectors.toList());
+		}
+
+		@Transactional(readOnly = true)
+		public SandwichResponseDTO obtenerPorId(Long id) {
+				Sandwich sandwich = sandwichRepository.findById(id)
+								.orElseThrow(() -> new RuntimeException("Sandwich no encontrado con ID: " + id));
+				return SandwichMapper.toResponseDto(sandwich);
+		}
+
+	@Transactional
+	public SandwichResponseDTO actualizar(Long id, SandwichRequestDTO dto) {
+			Sandwich sandwich = sandwichRepository.findById(id)
+							.orElseThrow(() -> new RuntimeException("Sandwich no encontrado con ID: " + id));
+
+			Tipo tipo = tipoRepository.findById(dto.getTipoId())
+							.orElseThrow(() -> new RuntimeException("Tipo no encontrado con ID: " + dto.getTipoId()));
+
+			Origen origen = origenRepository.findById(dto.getPaisId())
+							.orElseThrow(() -> new RuntimeException("Origen no encontrado con ID: " + dto.getPaisId()));
+
+			List<Ingrediente> ingredientes = ingredienteRepository.findAllById(dto.getIngredientesIds());
+
+			if (ingredientes.size() != dto.getIngredientesIds().size()) {
+					throw new RuntimeException("Uno o más ingredientes no fueron encontrados.");
+			}
+
+			// Validar nombre duplicado
+			if (sandwichRepository.existsByNombre(dto.getNombre())
+							&& !sandwichRepository.findByNombre(dto.getNombre()).get().getId().equals(id)) {
+					throw new RuntimeException("Ya existe un sándwich con el nombre: " + dto.getNombre());
+			}
+			
+			sandwich = SandwichMapper.fromDto(dto, tipo, origen, ingredientes);
+			sandwich.setId(id);
+			Sandwich actualizado = sandwichRepository.save(sandwich);
+			return SandwichMapper.toResponseDto(actualizado);
+	}
+
+	@Transactional
+	public void eliminar(Long id) {
+			if (!sandwichRepository.existsById(id)) {
+					throw new RuntimeException("No existe un sandwich con ID: " + id);
+			}
+			sandwichRepository.deleteById(id);
+	}
 
 }

@@ -40,6 +40,9 @@ public class Sandwich {
     @Column(nullable = false, length = 100)
     private String nombre;
 
+    @Column(name = "descripcion", length = 255)
+    private String descripcion;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tipoId", nullable = false)
     private Tipo tipo;
@@ -61,6 +64,15 @@ public class Sandwich {
         inverseJoinColumns = @JoinColumn(name = "ingredienteId")
     )
     private Set<Ingrediente> ingredientes;
+
+    @Column(name = "precio", nullable = false)
+    private double precio;
+
+    @Column(name = "disponible", nullable = false)
+    private boolean disponible;
+
+    @Column(name = "imagenUrl", length = 255)
+    private String imagenUrl;
 
     @Column(name = "fechaCreacion", nullable = false, updatable = false)
     private LocalDateTime fechaCreacion;

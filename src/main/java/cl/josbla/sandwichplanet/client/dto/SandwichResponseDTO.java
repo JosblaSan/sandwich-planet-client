@@ -15,9 +15,13 @@ import lombok.NoArgsConstructor;
 public class SandwichResponseDTO {
     private Long id;
     private String nombre;
+    private String descripcion;
     private String origen; // nombre del país
     private String tipo;   // nombre del tipo
     private List<String> ingredientes;
     private boolean vegetariano;
     private int caloriasAproximadas;
+    protected String imagenUrl;
+    private double precio;
+    private boolean disponible;
 }

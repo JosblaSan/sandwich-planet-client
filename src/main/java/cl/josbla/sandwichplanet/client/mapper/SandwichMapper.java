@@ -17,6 +17,7 @@ public class SandwichMapper {
         return SandwichResponseDTO.builder()
                 .id(sandwich.getId())
                 .nombre(sandwich.getNombre())
+                .descripcion(sandwich.getDescripcion())
                 .origen(sandwich.getOrigen().getNombre())
                 .tipo(sandwich.getTipo().getNombre())
                 .ingredientes(
@@ -27,6 +28,9 @@ public class SandwichMapper {
                 )
                 .vegetariano(sandwich.isVegetariano())
                 .caloriasAproximadas(sandwich.getCaloriasAproximadas())
+                .imagenUrl(sandwich.getImagenUrl())
+                .precio(sandwich.getPrecio())
+                .disponible(sandwich.isDisponible())
                 .build();
     }
 
@@ -49,6 +53,10 @@ public class SandwichMapper {
                 .ingredientes(ingredientes.stream().collect(Collectors.toSet()))
                 .vegetariano(dto.isVegetariano())
                 .caloriasAproximadas(dto.getCaloriasAproximadas())
+                .precio(dto.getPrecio())
+                .disponible(dto.isDisponible())
+                .descripcion(dto.getDescripcion())
+                .imagenUrl(dto.getImagenUrl())
                 .build();
     }
 
@@ -56,6 +64,7 @@ public class SandwichMapper {
         return SandwichResponseDTO.builder()
                 .id(sandwichGuardado.getId())
                 .nombre(sandwichGuardado.getNombre())
+                .descripcion(sandwichGuardado.getDescripcion())
                 .origen(sandwichGuardado.getOrigen().getNombre())
                 .tipo(sandwichGuardado.getTipo().getNombre())
                 .ingredientes(
@@ -66,6 +75,9 @@ public class SandwichMapper {
                 )
                 .vegetariano(sandwichGuardado.isVegetariano())
                 .caloriasAproximadas(sandwichGuardado.getCaloriasAproximadas())
+                .imagenUrl(sandwichGuardado.getImagenUrl())
+                .precio(sandwichGuardado.getPrecio())
+                .disponible(sandwichGuardado.isDisponible())
                 .build();
     }
 
@@ -73,8 +85,12 @@ public class SandwichMapper {
         return SandwichResumenDTO.builder()
                 .id(sandwich.getId())
                 .nombre(sandwich.getNombre())
+                .descripcion(sandwich.getDescripcion())
                 .origen(sandwich.getOrigen().getNombre())
                 .tipo(sandwich.getTipo().getNombre())
+                .imagenUrl(sandwich.getImagenUrl())
+                .precio(sandwich.getPrecio())
+                .disponible(sandwich.isDisponible())
                 .build();
     }
 
