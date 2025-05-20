@@ -16,6 +16,12 @@ public class SecurityConfig {
         http.authorizeHttpRequests(authHttp -> authHttp
             // Rutas anteriores
             .requestMatchers(HttpMethod.GET, "/authorized").permitAll()
+            .requestMatchers(
+                    "/swagger-ui/**",
+                    "/v3/api-docs/**",
+                    "/swagger-resources/**",
+                    "/webjars/**"
+                ).permitAll()
             .requestMatchers(HttpMethod.GET, "/list").hasAnyAuthority("SCOPE_read", "SCOPE_write")
             .requestMatchers(HttpMethod.POST, "/create").hasAuthority("SCOPE_write")
 
